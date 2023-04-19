@@ -6,6 +6,8 @@
   {{#each todos}}
     <li>
       {{this.name}}
+      {{!-- 瀏覽特定 To-do / 新增功能入口 --}}
+      <a href="./todos/{{ this._id }}">detail</a>
     </li>
   {{/each}}
 </ul>
