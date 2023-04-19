@@ -9,6 +9,10 @@
       {{!-- 瀏覽特定 To-do / 新增功能入口 --}}
       <a href="./todos/{{ this._id }}">detail</a>
       <a href="./todos/{{ this._id }}/edit">edit</a><!-- 加入這行 -->
+      <form action="./todos/{{ this._id }}/delete" method="POST" style="display: inline;">
+  <button type="submit">delete</button>
+</form>
     </li>
   {{/each}}
 </ul>
+
