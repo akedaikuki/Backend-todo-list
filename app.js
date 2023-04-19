@@ -80,12 +80,36 @@ app.post('/todos', (req, res) => {
      .catch(error => console.log(error))
 })
 
-
+// 新增 預覽特定 Todo 路由
 app.get('/todos/:id', (req, res) => {
     const id = req.params.id
     return Todo.findById(id)
       .lean()
       .then(todo => res.render('detail', { todo }))
+      .catch(error => console.log(error))
+})
+
+// 新增 Edit 頁面 讓使用者修改表單
+app.get('/todos/:id/edit', (req, res) => {
+    const id = req.params.id
+    return Todo.findById(id)
+      .lean()
+      .then(todo => res.render('edit', { todo }))
+      .catch(error => console.log(error))
+})
+
+app.post('/todos/:id/edit', (req, res) => {
+    const id = req.params.id
+    const name = req.body.name
+    // 1.查詢資料
+    return Todo.findById(id)
+    // 2.重新儲存資料
+      .then(todo => {
+        todo.name = name
+        return todo.save()
+      })
+      // 3.如果儲存成功 導向首頁
+      .then(() => res.redirect(`/todos/${id}`))
       .catch(error => console.log(error))
 })
 
