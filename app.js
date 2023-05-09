@@ -100,12 +100,15 @@ app.get('/todos/:id/edit', (req, res) => {
 
 app.post('/todos/:id/edit', (req, res) => {
     const id = req.params.id
-    const name = req.body.name
+    const { name, isDone } = req.body
     // 1.查詢資料
     return Todo.findById(id)
     // 2.重新儲存資料
       .then(todo => {
         todo.name = name
+        // 優先執行邏輯運算子 isDone === 'on' // 回傳 true
+        // 再執行賦值運算子 todo.isDone = true
+        todo.isDone = isDone === 'on'
         return todo.save()
       })
       // 3.如果儲存成功 導向首頁
