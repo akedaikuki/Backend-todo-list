@@ -50,6 +50,7 @@ app.get('/', (req, res) => {
     Todo.find() 
     // 取出 Todo model 裡的所有資料 //從資料庫查找資料
     .lean() 
+    .sort({ _id: 'asc' }) // 新增這裡：根據 _id 升冪排序
     // 把 Mongoose 的 Model 物件轉換成乾淨的 JavaScript 資料陣列 
     //把資料轉成單純的JS物件 
     //撈資料以後想用 res.render()，要先用 .lean() 來處理
