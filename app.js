@@ -10,13 +10,17 @@ const bodyParser = require('body-parser')
 const methodOverride = require('method-override') 
 // // 載入 Todo model
 // const Todo = require('./models/todo') 
+
+// 加入這段 code, 僅在非正式環境時, 使用 dotenv
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
+
 // 引用路由器
 const routes = require('./routes')
 require('./config/mongoose')
-// 加入這段 code, 僅在非正式環境時, 使用 dotenv
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config()
-  }
+
 
 
 const app = express()
