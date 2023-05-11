@@ -1,18 +1,27 @@
 {{!-- <h2>Hello world! 這是 index</h2> --}}
-<a href="./todos/new">Create</a>
+{{!-- <a href="./todos/new">Create</a> --}}
 
 
-<ul>
+<ul class="list-group">
   {{#each todos}}
-    <li>
-      <input type="checkbox" name="isDone" {{#if this.isDone }} checked {{/if}} disabled>
-      {{this.name}}
-      {{!-- 瀏覽特定 To-do / 新增功能入口 --}}
-      <a href="./todos/{{ this._id }}">detail</a>
-      <a href="./todos/{{ this._id }}/edit">edit</a><!-- 加入這行 -->
-      <form action="./todos/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
-  <button type="submit">delete</button>
-</form>
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-auto me-auto">
+          <input style="vertical-align: middle;" type="checkbox" name="isDone" 
+          {{#if this.isDone }} checked {{/if}} disabled>
+          <h4 style="display: inline; vertical-align: middle;">
+          {{this.name}}
+          </h4>
+        </div> 
+        <div class="col-auto"> 
+          {{!-- 瀏覽特定 To-do / 新增功能入口 --}}
+          <a class="btn btn-secondary" href="./todos/{{ this._id }}">detail</a>
+          <a class="btn btn-success" href="./todos/{{ this._id }}/edit">edit</a><!-- 加入這行 -->
+          <form action="./todos/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
+          <button class="btn btn-danger" type="submit">delete</button>
+          </form>
+        </div>
+      </div>
     </li>
   {{/each}}
 </ul>
