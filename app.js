@@ -71,6 +71,20 @@ app.use(methodOverride("_method"));
 // 呼叫 Passport 函式並傳入 app，這條要寫在路由之前
 usePassport(app);
 
+// 在路由器前 passport後 導入 設定本地變數 res.locals
+// 使用 app.use 代表這組 middleware 會作用於所有的路由
+app.use((req, res, next) => {
+  // 你可以在這裡 console.log(req.user) 等資訊來觀察
+  console.log(req.user);
+  // 兩個本地變數
+  // res.locals.isAuthenticated = 回傳布林值 交接給 res 使用
+  // res.locals.user = 把使用者資料交接給 res 使用
+  res.locals.isAuthenticated = req.isAuthenticated();
+  // req.user 是哪裡來的？ 是在反序列化的時候，取出的 user 資訊
+  res.locals.user = req.user;
+  next();
+});
+
 // 將 request 導入路由器
 app.use(routes);
 
