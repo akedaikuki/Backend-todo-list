@@ -4,12 +4,25 @@ const router = express.Router();
 // 引入 User model
 const User = require("../../models/user");
 
+// 引用 passport
+const passport = require("passport");
+
 // 路由設定清單，這裡我們先簡單加入一條「登入表單頁面」的路由
 router.get("/login", (req, res) => {
   res.render("login");
 });
 
-router.post("/login", (req, res) => {});
+// router.post("/login", (req, res) => {});
+// 修改成以下
+// 加入 middleware，驗證 request 登入狀態
+// 用 Passport 提供的 authenticate 方法執行認證。
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/users/login",
+  })
+);
 
 // 新增註冊頁面
 router.get("/register", (req, res) => {
