@@ -5,6 +5,9 @@ const router = express.Router();
 router.get("/login", (req, res) => {
   res.render("login");
 });
-
+// 新增註冊頁面
+router.get("/register", (req, res) => {
+  res.render("register");
+});
 // 匯出路由模組
 module.exports = router;
