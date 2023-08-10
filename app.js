@@ -14,6 +14,9 @@ const methodOverride = require("method-override");
 // 新增載入 express-session
 const session = require("express-session");
 
+// 設定 connect-flash
+const flash = require("connect-flash");
+
 // 加入這段 code, 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
@@ -71,6 +74,8 @@ app.use(methodOverride("_method"));
 // 呼叫 Passport 函式並傳入 app，這條要寫在路由之前
 usePassport(app);
 
+// 掛載套件 connect-flash
+app.use(flash());
 // 在路由器前 passport後 導入 設定本地變數 res.locals
 // 使用 app.use 代表這組 middleware 會作用於所有的路由
 app.use((req, res, next) => {
@@ -82,6 +87,10 @@ app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated();
   // req.user 是哪裡來的？ 是在反序列化的時候，取出的 user 資訊
   res.locals.user = req.user;
+  // 設定 success_msg 訊息
+  res.locals.success_msg = req.flash("success_msg");
+  // 設定 warning_msg 訊息
+  res.locals.warning_msg = req.flash("warning_msg");
   next();
 });
 
