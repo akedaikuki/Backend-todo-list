@@ -54,7 +54,8 @@ app.set("view engine", "hbs");
 app.use(
   session({
     // secret 這個參數是 session 用來驗證 session id 的字串。
-    secret: "ThisIsMySecret",
+    // 第三方串接 "ThisIsMySecret" 改成 以下
+    secret: process.env.SESSION_SECRET,
     // 當設定為 true 時，會在每一次與使用者互動後，
     // 強制把 session 更新到 session store 裡。
     resave: false,
@@ -194,7 +195,8 @@ app.use(routes);
 // app.js
 // 如果在 Heroku 環境則使用 process.env.PORT
 // 否則為本地環境，使用 3000
-const PORT = process.env.PORT || 3000;
+// 第三方連接後 可以不要 || 3000
+const PORT = process.env.PORT;
 // 設定應用程式監聽的埠號
 app.listen(PORT, () => {
   console.log(`App is running on http://localhost:${PORT}`);

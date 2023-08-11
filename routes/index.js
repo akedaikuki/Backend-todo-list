@@ -9,6 +9,9 @@ const todos = require("./modules/todos");
 // 追加 以下 引入 users 模組
 const users = require("./modules/users"); // add this
 
+// 載入 auth 模組
+const auth = require("./modules/auth");
+
 // 掛載 middleware
 const { authenticator } = require("../middleware/auth");
 
@@ -18,6 +21,9 @@ router.use("/todos", authenticator, todos);
 
 // 追加以下 導向 users 模組
 router.use("/users", users); // add this
+
+//掛載 auth 模組
+router.use("/auth", auth);
 
 // 將網址結構符合 / 字串的 request 導向 home 模組
 // 加入驗證程序

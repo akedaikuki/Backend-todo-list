@@ -4,6 +4,9 @@ const passport = require("passport");
 // passport 指定寫法： .Strategy
 const LocalStrategy = require("passport-local").Strategy;
 
+// 引用 Facebook 登入策略
+const FacebookStrategy = require("passport-facebook").Strategy;
+
 // 引用 bcrypt
 const bcrypt = require("bcryptjs");
 
@@ -50,6 +53,39 @@ module.exports = (app) => {
         .catch((err) => done(err, false));
     })
   );
+  //
+  passport.use(
+    new FacebookStrategy(
+      {
+        clientID: process.env.FACEBOOK_ID, //'你的應用程式編號',
+        clientSecret: process.env.FACEBOOK_SECRET, //'你的應用程式密鑰',
+        callbackURL: process.env.FACEBOOK_CALLBACK, //'http://localhost:3000/auth/facebook/callback',
+        profileFields: ["email", "displayName"], // 這個設定是和 Facebook 要求開放的資料
+      },
+      (accessToken, refreshToken, profile, done) => {
+        // console.log(profile);
+        const { name, email } = profile._json;
+        User.findOne({ email }).then((user) => {
+          if (user) return done(null, user);
+
+          const randomPassword = Math.random().toString(36).slice(-8);
+          bcrypt
+            .genSalt(10)
+            .then((salt) => bcrypt.hash(randomPassword, salt))
+            .then((hash) =>
+              User.create({
+                name,
+                email,
+                password: hash,
+              })
+            )
+            .then((user) => done(null, user))
+            .catch((err) => done(err, false));
+        });
+      }
+    )
+  );
+
   // 設定序列化與反序列化
   passport.serializeUser((user, done) => {
     done(null, user.id);
