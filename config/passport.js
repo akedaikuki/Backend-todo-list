@@ -4,6 +4,9 @@ const passport = require("passport");
 // passport 指定寫法： .Strategy
 const LocalStrategy = require("passport-local").Strategy;
 
+// 引用 bcrypt
+const bcrypt = require("bcryptjs");
+
 // 用到 User.findOne 不要忘記載入  User model。
 const User = require("../models/user");
 
@@ -25,12 +28,24 @@ module.exports = (app) => {
               message: "That email is not registered!",
             });
           }
-          if (user.password !== password) {
-            return done(null, false, {
-              message: "Email or Password incorrect.",
-            });
-          }
-          return done(null, user);
+          // if (user.password !== password) {
+          //   return done(null, false, {
+          //     message: "Email or Password incorrect.",
+          //   });
+          // }
+          // return done(null, user);
+          // 密碼比對：bcrypt.compare
+          // (password, user.password)
+          // 第一個參數 password 是使用者的輸入值，
+          // 而第二個參數 user.password 是資料庫裡的雜湊值
+          return bcrypt.compare(password, user.password).then((isMatch) => {
+            if (!isMatch) {
+              return done(null, false, {
+                message: "Email or Password incorrect.",
+              });
+            }
+            return done(null, user);
+          });
         })
         .catch((err) => done(err, false));
     })
