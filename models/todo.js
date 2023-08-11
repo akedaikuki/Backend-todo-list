@@ -10,6 +10,7 @@ const todoSchema = new Schema({
     default: false,
   },
   // Todo Model 加入 userId
+  // 這組設定代表「去參照 User 的 ObjectId」。
   userId: {
     // 加入關聯設定
     // type = 定義 userId 這個項目是一個 ObjectId，
